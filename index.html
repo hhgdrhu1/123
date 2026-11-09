@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今天喝什麼？</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: linear-gradient(135deg, #fff3e8, #f7e8ef);
+  color: #263238;
+}
+.app {
+  width: min(100%, 520px);
+  padding: 32px;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 16px 45px #5b3d4922;
+}
+h1 {
+  text-align: center;
+}
+.subtitle {
+  text-align: center;
+  color: #778087;
+}
+label {
+  display: block;
+  margin-bottom: 9px;
+  font-weight: bold;
+}
+textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid #e3d9dc;
+  border-radius: 14px;
+  font: inherit;
+  line-height: 1.8;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: #c97891;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover {
+  background: #b96580;
+}
+.result {
+  margin-top: 22px;
+  min-height: 116px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 2px dashed #e7c6d0;
+  border-radius: 16px;
+  background: #fff8fa;
+}
+#resultText {
+  color: #a94f70;
+  font-size: 30px;
+  font-weight: bold;
+}
+#message {
+  color: #bd4d4d;
+}
+</style>
+</head>
+
+<body>
+<main class="app">
+  <h1>今天喝什麼？🥤</h1>
+  <p class="subtitle">把選擇交給命運！</p>
+
+  <label for="options">
+    飲料店清單（每行一個選項）
+  </label>
+
+  <textarea id="options">50嵐
+迷客夏
+得正
+大茗</textarea>
+
+  <p>可以自行新增或刪除選項。</p>
+
+  <button id="pickButton">幫我選！</button>
+
+  <section class="result" aria-live="polite">
+    <div>
+      <div>今天就決定喝這個</div>
+      <div id="resultText">等你來抽籤 ✨</div>
+      <p id="message"></p>
+    </div>
+  </section>
+</main>
+
+<script>
+const optionsInput =
+  document.getElementById("options");
+
+const pickButton =
+  document.getElementById("pickButton");
+
+const resultText =
+  document.getElementById("resultText");
+
+const message =
+  document.getElementById("message");
+
+pickButton.addEventListener("click", () => {
+
+  // 整理選項
+  const options = [...new Set(
+    optionsInput.value
+      .split(/\r?\n/)
+      .map(option => option.trim())
+      .filter(option => option.length > 0)
+  )];
+
+  // 檢查清單是否為空
+  if (options.length === 0) {
+    resultText.textContent = "還沒有選項";
+    message.textContent =
+      "請先輸入至少一個選項";
+    return;
+  }
+
+  // 隨機抽取
+  const randomIndex =
+    Math.floor(Math.random() * options.length);
+
+  resultText.textContent =
+    options[randomIndex];
+
+  message.textContent =
+    `從 ${options.length} 個有效選項中抽出！`;
+});
+</script>
+</body>
+</html>
